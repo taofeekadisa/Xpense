@@ -1,3 +1,11 @@
+# from fastapi import Cookie, Depends, FastAPI, Body, Form, HTTPException, Header, Query, status
+# from datetime import date
+# from fastapi.security import OAuth2PasswordBearer
+# from data import users, expenses
+# from pydantic import BaseModel, Field
+# from typing import Annotated, Optional, Union
+
+
 users = {
     "Alee": { 
         "username": "Alee",
@@ -133,3 +141,26 @@ expenses = {
         },
     }
 }
+
+
+# class UserParams(BaseModel):
+#     model_config = {"extra": "forbid"}
+    
+#     job: Optional[str] = None
+#     age: Annotated[str | float, Field(gt=0, lt=70, description="Age of users", title="Age of users")] = None
+#     city: Optional[str] = None
+#     salary: Optional[float] = None
+#     experience:Optional[int] = None
+#     department: Optional[str] = None
+#     gender: Optional[str] = None
+
+# def get_users(user_params:Annotated[UserParams, Query()]):
+#     filtered_users = users
+    
+#     if user_params.job is not None:
+#         for Id, user_profile in filtered_users.items():
+#             if user_profile["job"] == user_params.job:
+#             return 
+        
+#         return filtered_users
+#     return users

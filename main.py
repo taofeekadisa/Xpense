@@ -62,12 +62,14 @@ def login(user: UserLogin):
 
 @app.get("/v1/users")
 def get_users(user_params:Annotated[UserParams, Query()]):
-    filtered_users = users
+    filtered_users = {}
     
     if user_params.job is not None:
-        filtered_users = [user for user in filtered_users if user["job"] == user_params.job ]
-        
-        return filtered_users
+        for Id, user_profile in users.items():
+            while user_profile["job"] == user_params.job:
+                filtered_users.update(user_profile)
+            return filtered_users
+            print(filtered_users)
     return users
         
     
