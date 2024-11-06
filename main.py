@@ -2,7 +2,7 @@ from fastapi import Cookie, Depends, FastAPI, Body, Form, HTTPException, Header,
 from datetime import date
 from fastapi.security import OAuth2PasswordBearer
 from data import users, expenses
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr, validate_email
 from typing import Annotated, Optional, Union
 
 
@@ -11,13 +11,26 @@ app = FastAPI()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+class Address(BaseModel):
+    AddressLine: list[str]
+    City: str
+    postal_code:str
+class AccountDetails(BaseModel):
+    account_name: str
+    account_number: Annotated[int, Field(ge=10)]
+    bank_name: str
+    account_type: str
+ 
 class User(BaseModel):
-    username:str
-    email:str
-    password:str
+    username: str
+    email: str
+    address: Address
+    account_details: list[AccountDetails]
+    password: str
+
     
 class UserLogin(BaseModel):
-    username_email:str
+    username_email:EmailStr
     password:str
   
 class UserUpdate(BaseModel):
@@ -28,7 +41,7 @@ class UserParams(BaseModel):
     model_config = {"extra": "forbid"}
     
     job: Optional[str] = None
-    age: Annotated[str | float, Field(gt=0, lt=70, description="Age of users", title="Age of users")] = None
+    age: Annotated[str | float, Field(description="Age of users", title="Age of users")] = None
     city: Optional[str] = None
     salary: Optional[float] = None
     experience:Optional[int] = None
@@ -36,7 +49,7 @@ class UserParams(BaseModel):
     gender: Optional[str] = None
             
 @app.post("/v1/signup")
-def signup(user:User, confirm_password:Annotated[str, Body()]):
+def signup(user:User, confirm_password:Annotated[str, Body()], is_active:Annotated[bool, Body()]):
     for Id, user_data in users.items():
         if Id == user.username:
             return "Username already exit"
@@ -62,18 +75,37 @@ def login(user: UserLogin):
 
 @app.get("/v1/users")
 def get_users(user_params:Annotated[UserParams, Query()]):
-    filtered_users = users
-    
-    if user_params.job is not None:
-        filtered_users = [user for user in filtered_users if user["job"] == user_params.job ]
-        
-        return filtered_users
+    # filtered_users = {Id:user_profile for Id, user_profile in users.items() if user_profile["job"] == user_params.job}
+    # return filtered_users
+    filtered_users = {}
+    for Id, value in user_params.model_dump().items():
+        if user_params.job is not None:
+            for Id, user_profile in users.items():
+                if user_profile["job"] == user_params.job:
+                    filtered_users[Id] = user_profile  
+                    return filtered_users
+
+        if user_params.age is not None:
+            for Id, user_profile in users.items():
+                if user_profile["age"] == user_params.age:
+                    filtered_users[Id] = user_profile  
+                    return filtered_users
     return users
         
-    
-    
-    # if query.age is not None:
-    #     filtered_users = [user for user in filtered_users if user["age"] == query.age]
+
+# @app.get("/v1/users")
+# def get_users(user_params: Annotated[UserParams, Query()]):
+#     filtered_users = {}
+
+#     for Id, user_profile in users.items():
+#         if user_params.job is not None and user_profile["job"] != user_params.job:
+#             continue
+#         if user_params.age is not None and user_profile["age"] != user_params.age:
+#             continue
+#         filtered_users[Id] = user_profile
+
+#     return filtered_users if filtered_users else users 
+
 
 
 @app.put("/v1/users/{user_Id}")
