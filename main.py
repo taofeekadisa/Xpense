@@ -41,7 +41,7 @@ class UserParams(BaseModel):
     model_config = {"extra": "forbid"}
     
     job: Optional[str] = None
-    age: Annotated[str | float, Field(description="Age of users", title="Age of users")] = None
+    age: Annotated[int | float, Field(description="Age of users", title="Age of users")] = None
     city: Optional[str] = None
     salary: Optional[float] = None
     experience:Optional[int] = None
@@ -78,19 +78,30 @@ def get_users(user_params:Annotated[UserParams, Query()]):
     # filtered_users = {Id:user_profile for Id, user_profile in users.items() if user_profile["job"] == user_params.job}
     # return filtered_users
     filtered_users = {}
-    for Id, value in user_params.model_dump().items():
-        if user_params.job is not None:
-            for Id, user_profile in users.items():
-                if user_profile["job"] == user_params.job:
-                    filtered_users[Id] = user_profile  
-                    return filtered_users
+    for user_id, user_profile in users.items():
+        match = True
+        for field in user_params.model_fields_set:
+            param_value = getattr(user_params, field)
+            if param_value is not None and user_profile.get(field) != param_value:
+                match = False
+                break
+        if match:
+            filtered_users[user_id] = user_profile
 
-        if user_params.age is not None:
-            for Id, user_profile in users.items():
-                if user_profile["age"] == user_params.age:
-                    filtered_users[Id] = user_profile  
-                    return filtered_users
-    return users
+    return filtered_users
+    # for Id, value in user_params.model_dump().items():
+    #     if user_params.job is not None:
+    #         for Id, user_profile in users.items():
+    #             if user_profile["job"] == user_params.job:
+    #                 filtered_users[Id] = user_profile  
+    #                 return filtered_users
+
+    #     if user_params.age is not None:
+    #         for Id, user_profile in users.items():
+    #             if user_profile["age"] == user_params.age:
+    #                 filtered_users[Id] = user_profile  
+    #                 return filtered_users
+    # return users
         
 
 # @app.get("/v1/users")
