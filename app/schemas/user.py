@@ -10,6 +10,7 @@ class Address(BaseModel):
     AddressLine: list[str]
     City: str
     postal_code:str
+    
 class AccountDetails(BaseModel):
     account_name: str
     account_number: Annotated[int, Field(ge=10)]
