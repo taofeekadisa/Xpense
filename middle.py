@@ -1,24 +1,17 @@
 from typing import Annotated
 from fastapi import Body, FastAPI, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 import time
 
 app = FastAPI()
 
-"""
-1. username
-2. name
-3. email
-4. password
-5. age
-"""
 user_db = {"Alee":{"username":"Alee", "name":"John", "email":"ta@ta.com","password":"mypass", "age":27}}
 
 class User(BaseModel):
     username:str
     name:str
-    email:str
+    email:EmailStr
     password:str
     age:int
 
@@ -31,24 +24,25 @@ async def request_logger(request:Request, call_next):
     response = await call_next(request)
     
     duration = time.time() - start_time
+    response.headers["X-Process-Time"] = str(duration)
     log_info = {"Duration":duration, "Request":request.method, "Status":response.status_code}
     print(log_info)
     
     return response
 
 origins = [
-    "http://localhost:8080",
+    "http://localhost:8000"
 ]
 
-methods = ["GET", "POST"]
+methods = ["POST"]
 
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=methods,
-    allow_headers=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 @app.post("/signup",status_code=status.HTTP_201_CREATED)
