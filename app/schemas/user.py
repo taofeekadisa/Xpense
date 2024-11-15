@@ -22,7 +22,7 @@ class User(AccountDetails):
     email: str
     address: Address
     password: str
-    created_at:current_time
+    created_at:Optional[current_time]
     
     model_config = {
    "json_schema_extra": {
