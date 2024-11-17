@@ -30,8 +30,10 @@ def user_expenses(user_id:str, expense_params: Annotated[ExpenseParams, Query()]
     return user_expenses
 
 @expense_router.get("/users/{user_id}/expenses/{expense_id}", status_code=status.HTTP_200_OK)
-def user_expense():
-    pass
+def user_expense(user_id:str, expense_id:str):
+    expense = expense_crud.user_expense(user_id, expense_id)
+    
+    return expense
 
 @expense_router.put("/users/{user_id}/expenses/{expense_id}", status_code=status.HTTP_201_CREATED)
 def update_expense():

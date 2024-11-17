@@ -90,9 +90,19 @@ class ExpenseCrud():
     
     #Get user expense
     @staticmethod
-    def user_expense():
-        pass 
-    
+    def user_expense(user_id:str, expense_id:str):
+        if user_id in expenses:
+            expense_dict = expenses[user_id]
+            
+            if expense_id in expense_dict:
+                expense = expense_dict[expense_id]
+                
+                return expense
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="expense id not found")
+         
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="user id not found")           
+            
+            
     #Update user expense
     @staticmethod
     def update_expense():
