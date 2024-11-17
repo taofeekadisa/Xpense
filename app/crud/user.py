@@ -53,10 +53,26 @@ class UserCrud():
         return filtered_users 
     
     @staticmethod
-    def update_profile():
-        pass
+    def update_profile(user_Id:str, update_profile:UserUpdate):
+        for Id, user_data in users.items():
+            if Id == user_Id:
+            
+                if Id == update_profile.username:
+                    return "Username already exit"
+                for k, v in user_data.items():
+                    if user_data["email"] == update_profile.email:
+                        return "Email already exist"
+                users[update_profile.username] = users.pop(Id) 
+                user_data["username"] = update_profile.username
+                user_data["email"] = update_profile.email         
+                return "Update Successful"
+            return "User Not Found"
     
     @staticmethod
-    def delete_profile():
-        pass
+    def delete_profile(user_Id:str):
+        for Id, user_data in users.items():
+            if Id == user_Id:
+                del users[Id]
+                return "Account"
+
 user_crud = UserCrud()

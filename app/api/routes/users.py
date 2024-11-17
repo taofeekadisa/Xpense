@@ -27,19 +27,9 @@ def get_users(user_params: Annotated[UserParams, Query()]):
 
 @user_router.put("/v1/users/{user_Id}",  tags=["Users"])
 def update_profile(user_Id:str, update_profile:UserUpdate):
-    for Id, user_data in users.items():
-        if Id == user_Id:
-            
-            if Id == update_profile.username:
-                return "Username already exit"
-            for k, v in user_data.items():
-                if user_data["email"] == update_profile.email:
-                    return "Email already exist"
-            users[update_profile.username] = users.pop(Id) 
-            user_data["username"] = update_profile.username
-            user_data["email"] = update_profile.email         
-            return "Update Successful"
-        return "User Not Found"
+    updated_profile = user_crud.update_profile(user_Id, update_profile)
+    
+    return updated_profile
     
     
 @user_router.delete("/v1/users/{user_Id}",  tags=["Users"])
