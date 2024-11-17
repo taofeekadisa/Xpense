@@ -125,6 +125,7 @@ async def login(user: UserLogin) -> UserLogin:
             return user
     return "Invalid login credentials" 
 
+
 @app.get("/v1/users")
 def get_users(user_params: Annotated[UserParams, Query()]):
     filtered_users = {}

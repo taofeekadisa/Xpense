@@ -7,7 +7,7 @@ users = {
         "age": 28, 
         "city": "Lagos",
         "salary": 70000,
-        "experience": 4,  # in years
+        "experience": 4,
         "department": "IT",
         "gender": "Male"
     },
@@ -133,3 +133,5 @@ expenses = {
         },
     }
 }
+
+
