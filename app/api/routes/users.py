@@ -34,9 +34,7 @@ def update_profile(user_Id:str, update_profile:UserUpdate):
     
 @user_router.delete("/v1/users/{user_Id}",  tags=["Users"])
 def delete_profile(user_Id:str):
-    for Id, user_data in users.items():
-        if Id == user_Id:
-            del users[Id]
-            return "Account deleted"
-    return "Unauthorised Access"
+    profile_deleted = user_crud.delete_profile(user_Id)
+    
+    return profile_deleted
 

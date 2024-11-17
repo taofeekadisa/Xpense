@@ -66,13 +66,14 @@ class UserCrud():
                 user_data["username"] = update_profile.username
                 user_data["email"] = update_profile.email         
                 return "Update Successful"
-            return "User Not Found"
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No match found")
     
     @staticmethod
     def delete_profile(user_Id:str):
         for Id, user_data in users.items():
             if Id == user_Id:
                 del users[Id]
-                return "Account"
+                return "Account deleted"
+            return "Unauthorised Access"
 
 user_crud = UserCrud()
