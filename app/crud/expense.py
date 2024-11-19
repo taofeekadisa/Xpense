@@ -1,8 +1,9 @@
 from typing import Annotated
 import uuid
 from fastapi import Body, status, HTTPException
+from fastapi.encoders import jsonable_encoder
 from app.db.data import expenses, users
-from app.schemas.expense import ExpenseModel, ExpenseParams
+from app.schemas.expense import ExpenseModel, ExpenseParams, ExpenseUpdate
 
 class ExpenseCrud():
     #Create expense endpoint
@@ -105,13 +106,36 @@ class ExpenseCrud():
             
     #Update user expense
     @staticmethod
-    def update_expense():
-        pass
+    def update_expense(user_id:str, expense_id:str, expense:ExpenseUpdate):
+        if user_id in expenses:
+            expense_dict = expenses[user_id]
+            
+            if expense_id in expense_dict:
+                stored_expense = expense_dict[expense_id]
+                stored_expense_model = ExpenseUpdate(**stored_expense)
+                update_expense = expense.model_dump(exclude_unset=True)
+                updated_expense = stored_expense_model.model_copy(update=update_expense)
+                expense_dict[expense_id] = jsonable_encoder( updated_expense)
+                
+                return updated_expense
+            
+            return None
+        return None
     
     #Delete user expense
     @staticmethod
-    def delete_expense():
-        pass
+    def delete_expense(user_id:str, expense_id:str):
+        if user_id in expenses:
+            expense_dict = expenses[user_id]
+            
+            if expense_id in expense_dict:
+                del expense_dict[expense_id]
+                
+                return "Deleted Successfully"
+            
+        
+        return None
    
 
 expense_crud = ExpenseCrud()
+
