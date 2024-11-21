@@ -46,10 +46,20 @@ def update_expense(user_id:str, expense_id:str, expense:ExpenseUpdate):
 
 @expense_router.delete("/users/{user_id}/expenses/{expense_id}",status_code=status.HTTP_204_NO_CONTENT)
 def delete_expense(user_id:str, expense_id:str):
-    deleted_expense = expense_crud.delete_expense(user_id, expense_id)
+    if user_id not in expenses:
+            return {"success": False, "message": f"User ID {user_id} not found."}, 404
+
+    expense_dict = expenses[user_id]
+    if expense_id not in expense_dict:
+        return {
+            "success": False,
+            "message": f"Expense ID {expense_id} not found for User ID {user_id}.",
+        }, 404
+
+    expense_dict.pop(expense_id)
+    return {"success": True, "message": "Deleted successfully."}, 200 
     
-    
-    return deleted_expense
+
     
   
     

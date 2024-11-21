@@ -124,18 +124,31 @@ class ExpenseCrud():
     
     #Delete user expense
     @staticmethod
-    def delete_expense(user_id:str, expense_id:str):
-        if user_id in expenses:
-            expense_dict = expenses[user_id]
+    # def delete_expense(user_id:str, expense_id:str):
+    #     if user_id in expenses:
+    #         expense_dict = expenses[user_id]
             
-            if expense_id in expense_dict:
-                del expense_dict[expense_id]
+    #         if expense_id in expense_dict:
+    #             del expense_dict[expense_id]
                 
-                return "Deleted Successfully"
+    #             return "Deleted Successfully"
             
         
-        return None
-   
+    #     return None
+    
+    def delete_expense(user_id: str, expense_id: str):
+        if user_id not in expenses:
+            return {"success": False, "message": f"User ID {user_id} not found."}, 404
+
+        expense_dict = expenses[user_id]
+        if expense_id not in expense_dict:
+            return {
+            "success": False,
+            "message": f"Expense ID {expense_id} not found for User ID {user_id}.",
+        }, 404
+
+        expense_dict.pop(expense_id)
+        return {"success": True, "message": "Deleted successfully."}, 200 
 
 expense_crud = ExpenseCrud()
 

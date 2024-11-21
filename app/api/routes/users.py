@@ -19,20 +19,20 @@ async def login(user:Annotated[UserLogin, Form()]):
    return response
 
 
-@user_router.get("/users")
+@user_router.get("/users",  status_code=status.HTTP_200_OK)
 def get_users(user_params: Annotated[UserParams, Query()]):
     users_data = user_crud.get_users(user_params)
     return users_data
 
 
-@user_router.put("/users/{user_Id}")
+@user_router.put("/users/{user_Id}", status_code=status.HTTP_201_CREATED)
 def update_profile(user_Id:str, update_profile:UserUpdate):
     updated_profile = user_crud.update_profile(user_Id, update_profile)
     
     return updated_profile
     
     
-@user_router.delete("/users/{user_Id}")
+@user_router.delete("/users/{user_Id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_profile(user_Id:str):
     profile_deleted = user_crud.delete_profile(user_Id)
     
