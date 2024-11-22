@@ -1,9 +1,14 @@
 from typing import Annotated
 import uuid
 from fastapi import Body, status, HTTPException
+<<<<<<< HEAD
+from app.db.data import expenses, users
+from app.schemas.expense import ExpenseModel, ExpenseParams
+=======
 from fastapi.encoders import jsonable_encoder
 from app.db.data import expenses, users
 from app.schemas.expense import ExpenseModel, ExpenseParams, ExpenseUpdate
+>>>>>>> 40ee1b3030d940c28f6f7b92c1e102e1239c7997
 
 class ExpenseCrud():
     #Create expense endpoint
@@ -106,6 +111,18 @@ class ExpenseCrud():
             
     #Update user expense
     @staticmethod
+<<<<<<< HEAD
+    def update_expense():
+        pass
+    
+    #Delete user expense
+    @staticmethod
+    def delete_expense():
+        pass
+   
+
+expense_crud = ExpenseCrud()
+=======
     def update_expense(user_id:str, expense_id:str, expense:ExpenseUpdate):
         if user_id in expenses:
             expense_dict = expenses[user_id]
@@ -152,3 +169,4 @@ class ExpenseCrud():
 
 expense_crud = ExpenseCrud()
 
+>>>>>>> 40ee1b3030d940c28f6f7b92c1e102e1239c7997

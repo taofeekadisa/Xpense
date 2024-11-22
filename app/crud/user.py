@@ -65,7 +65,11 @@ class UserCrud():
                 users[update_profile.username] = users.pop(Id) 
                 user_data["username"] = update_profile.username
                 user_data["email"] = update_profile.email         
+<<<<<<< HEAD
+                return "Update Successful"
+=======
                 return {"message":"Account Updated Successfully", "success":True}
+>>>>>>> 40ee1b3030d940c28f6f7b92c1e102e1239c7997
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No match found")
     
     @staticmethod

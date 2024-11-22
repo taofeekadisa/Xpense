@@ -36,6 +36,14 @@ def user_expense(user_id:str, expense_id:str):
     return expense
 
 @expense_router.put("/users/{user_id}/expenses/{expense_id}", status_code=status.HTTP_201_CREATED)
+<<<<<<< HEAD
+def update_expense():
+    pass
+
+@expense_router.delete("/users/{user_id}/expenses/{expense_id}",status_code=status.HTTP_204_NO_CONTENT)
+def delete_expense():
+    pass
+=======
 def update_expense(user_id:str, expense_id:str, expense:ExpenseUpdate):
     updated_expense = expense_crud.update_expense(user_id, expense_id, expense)
     
@@ -65,3 +73,4 @@ def delete_expense(user_id:str, expense_id:str):
     
 
         
+>>>>>>> 40ee1b3030d940c28f6f7b92c1e102e1239c7997
