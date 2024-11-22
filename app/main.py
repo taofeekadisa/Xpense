@@ -5,8 +5,8 @@ from app.api.routes.expenses import expense_router
 
 app = FastAPI()
 
-app.include_router(user_router)
-app.include_router(expense_router)
+app.include_router(user_router, tags=["Users"], prefix="/v1")
+app.include_router(expense_router, tags=["Expenses"], prefix="/v1")
 
 
 
