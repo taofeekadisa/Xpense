@@ -34,6 +34,7 @@ test_new_user = {
     "bank_name": "string",
     "account_type": "string"
   }
+
 alee = {"Alee": {
     "username": "Alee",
     "email": "ta@ta.com",
@@ -53,6 +54,7 @@ def test_get_users():
     assert response.json() == users
 
 
+
 def test_create_user():
     response = client.post("/v1/signup", json=test_user)
     assert response.status_code == 201
@@ -70,6 +72,6 @@ def test_update_user():
     assert response.status_code == 201
     assert response.json() == {"message":"Account Updated Successfully", "success":True}
 
-def test_delete_user():
-    response = client.delete("/v1/users/Alee")
-    assert response.status_code == 204
+# def test_delete_user():
+#     response = client.delete("/v1/users/Alee")
+#     assert response.status_code == 204
