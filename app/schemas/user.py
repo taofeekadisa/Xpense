@@ -66,9 +66,9 @@ class UserLogin(BaseModel):
     model_config = {"extra": "forbid"}
   
 class UserUpdate(BaseModel):
-    username:str
-    email:str
-    updated_at:datetime
+    username:Optional[str]
+    email:Optional[str]
+    # updated_at:current_time
   
 class UserParams(BaseModel):
     model_config = {"extra": "forbid"}

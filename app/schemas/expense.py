@@ -19,3 +19,12 @@ class ExpenseParams(BaseModel):
     description: Optional[str] = None
     amount: Optional[float | int] = None
     created_at:Optional[str] = None
+    
+class ExpenseUpdate(BaseModel):
+    title:Optional[str] = None
+    category:Optional[str] = None
+    description:Optional[str] = None
+    amount:Optional[float] = None
+ 
+    
+ 
