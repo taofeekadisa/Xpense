@@ -53,10 +53,31 @@ class UserCrud():
         return filtered_users 
     
     @staticmethod
-    def update_profile():
-        pass
+    def update_profile(user_Id:str, update_profile:UserUpdate):
+        for Id, user_data in users.items():
+            if Id == user_Id:
+            
+                if Id == update_profile.username:
+                    return "Username already exit"
+                for k, v in user_data.items():
+                    if user_data["email"] == update_profile.email:
+                        return "Email already exist"
+                users[update_profile.username] = users.pop(Id) 
+                user_data["username"] = update_profile.username
+                user_data["email"] = update_profile.email         
+<<<<<<< HEAD
+                return "Update Successful"
+=======
+                return {"message":"Account Updated Successfully", "success":True}
+>>>>>>> 40ee1b3030d940c28f6f7b92c1e102e1239c7997
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No match found")
     
     @staticmethod
-    def delete_profile():
-        pass
+    def delete_profile(user_Id:str):
+        for Id, user_data in users.items():
+            if Id == user_Id:
+                del users[Id]
+                return "Account deleted"
+            return "Unauthorised Access"
+
 user_crud = UserCrud()

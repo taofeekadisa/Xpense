@@ -7,46 +7,46 @@ from app.crud.user import user_crud
 user_router =  APIRouter()
 
 
-@user_router.post("/v1/signup", response_model_exclude=["bank_name"], status_code=status.HTTP_201_CREATED, tags=["Users"])
+@user_router.post("/signup", response_model_exclude=["bank_name"], status_code=status.HTTP_201_CREATED)
 def signup(user:User, confirm_password:Annotated[str, Body()], is_active:Annotated[bool, Body()], header_params:Annotated[HeaderParams, Header()]):
     new_user = user_crud.create_users(user, confirm_password)
     return {"message":"Account Created Successfully", "data":new_user}
 
 
-@user_router.post("/v1/Login",  tags=["Users"])
+@user_router.post("/Login")
 async def login(user:Annotated[UserLogin, Form()]):
    response = user_crud.login(user)
    return response
 
 
-@user_router.get("/v1/users",  tags=["Users"])
+<<<<<<< HEAD
+@user_router.get("/users")
+=======
+@user_router.get("/users",  status_code=status.HTTP_200_OK)
+>>>>>>> 40ee1b3030d940c28f6f7b92c1e102e1239c7997
 def get_users(user_params: Annotated[UserParams, Query()]):
     users_data = user_crud.get_users(user_params)
     return users_data
 
 
-@user_router.put("/v1/users/{user_Id}",  tags=["Users"])
+<<<<<<< HEAD
+@user_router.put("/users/{user_Id}")
+=======
+@user_router.put("/users/{user_Id}", status_code=status.HTTP_201_CREATED)
+>>>>>>> 40ee1b3030d940c28f6f7b92c1e102e1239c7997
 def update_profile(user_Id:str, update_profile:UserUpdate):
-    for Id, user_data in users.items():
-        if Id == user_Id:
-            
-            if Id == update_profile.username:
-                return "Username already exit"
-            for k, v in user_data.items():
-                if user_data["email"] == update_profile.email:
-                    return "Email already exist"
-            users[update_profile.username] = users.pop(Id) 
-            user_data["username"] = update_profile.username
-            user_data["email"] = update_profile.email         
-            return "Update Successful"
-        return "User Not Found"
+    updated_profile = user_crud.update_profile(user_Id, update_profile)
+    
+    return updated_profile
     
     
-@user_router.delete("/v1/users/{user_Id}",  tags=["Users"])
+<<<<<<< HEAD
+@user_router.delete("/users/{user_Id}")
+=======
+@user_router.delete("/users/{user_Id}", status_code=status.HTTP_204_NO_CONTENT)
+>>>>>>> 40ee1b3030d940c28f6f7b92c1e102e1239c7997
 def delete_profile(user_Id:str):
-    for Id, user_data in users.items():
-        if Id == user_Id:
-            del users[Id]
-            return "Account deleted"
-    return "Unauthorised Access"
+    profile_deleted = user_crud.delete_profile(user_Id)
+    
+    return profile_deleted
 
