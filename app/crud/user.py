@@ -74,6 +74,7 @@ class UserCrud():
     
     @staticmethod
     def delete_profile(user_Id:str):
+        assert type(user_Id) == str , "user_id must be a string"
         for Id, user_data in users.items():
             if Id == user_Id:
                 del users[Id]
