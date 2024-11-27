@@ -1,6 +1,7 @@
 from fastapi import  FastAPI
 from app.api.routes.users import user_router
 from app.api.routes.expenses import expense_router
+from app.db.database import *
 
 
 app = FastAPI()
@@ -8,7 +9,9 @@ app = FastAPI()
 app.include_router(user_router, tags=["Users"], prefix="/v1")
 app.include_router(expense_router, tags=["Expenses"], prefix="/v1")
 
-
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
 
 
